@@ -2,7 +2,9 @@
 
 'The Mansion' is a thrilling text-based horror survival game with an interactive combat system.
 
-#### Video Demo:  <URL https://youtu.be/i2GQEanGdOo>
+<a href="https://youtu.be/i2GQEanGdOo">
+    <img alt="Flaticon" title="Flaticon" src="https://cdn-icons-png.flaticon.com/256/1384/1384060.png" width="30">
+</a>
 
 #### DESCRIPTION
 
