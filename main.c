@@ -17,16 +17,16 @@
 // ##################################################
     
 // Items with name, amount and bool if picked up or not
-typedef struct item
+typedef struct Item
 {
     string name;
     int amount;
     bool picked_up;
 }
-item;
+Item;
 
 // Weapons
-typedef struct weapon
+typedef struct Weapon
 {
     string name;
     int ammo;
@@ -35,65 +35,65 @@ typedef struct weapon
     int max_damage;
     bool picked_up;
 }
-weapon;
+Weapon;
 
 // Zombie setup
-typedef struct zombie
+typedef struct Zombie
 {
     int min_attack;
     int max_attack;
     int life;
     bool is_dead;
 }
-zombie;
+Zombie;
 
 // Room setup
-typedef struct room
+typedef struct Room
 {
     string name;
     string floor_name;
     bool visited;
-    int zombie_amount;
+    int ZOMBIE_AMOUNT;
     int item_amount;
     int weapon_amount;
     int searched;
     bool riddle;
-    zombie *enemies[3];
-    item *items[4];
-    weapon *weapons[4];
-    struct room *next_room[6];
-    void (*func)(player); 
+    Zombie *enemies[3];
+    Item *Items[4];
+    Weapon *weapons[4];
+    struct Room *next_room[6];
+    void (*func)(Player); 
 }
-room;
+Room;
 
 // Player with inventory of items, health points and current equipped weapon and shells
-typedef struct player
+typedef struct Player
 {
-    item *inventory[9];
-    weapon *weapons[3];
-    weapon *active_weapon;
-    room *current_room;
+    Item *inventory[9];
+    Weapon *weapons[3];
+    Weapon *active_weapon;
+    Room *current_room;
     int health;
     int lives;
 }
-player;
+Player;
 
 // Struct for Maze to run through it
-typedef struct maze_path
+typedef struct MazePath
 {
     int num;
-    struct maze_path *available_paths[3];
+    struct MazePath *available_paths[3];
     int end_of_path;
 }
-maze_path;
+MazePath;
 
 // ##################################################
 // RIDDLES
 // ##################################################
 
 // Picture Place Game
-void GuestRoomRiddle(player *player, room *previous_room);
-void check(player *player, int *row, int *col, room *previous_room);
+void GuestRoomRiddle(Player *player, Room *previous_room);
+void check(Player *player, int *row, int *col, Room *previous_room);
 char array[3][3] = {{'K', 'B', 'X'},
                     {'D', 'I', 'E'},
                     {' ', 'L', 'Y'}};
@@ -102,54 +102,54 @@ char sample[3][3] = {{'K', 'B', 'X'},
                     {' ', 'L', 'Y'}};
 
 // Inspecting items
-void DiningRoomRiddle(player *player, room *previous_room);
+void DiningRoomRiddle(Player *player, Room *previous_room);
 
 // Removing planes
-void VestibuleRiddle(player *player, room *previous_room);
+void VestibuleRiddle(Player *player, Room *previous_room);
 
 // Riddle converting letter to binary code
-void LaundryRoomRiddle(player *player, room *previous_room);
+void LaundryRoomRiddle(Player *player, Room *previous_room);
 
 // ##################################################
 // GLOBAL VARIABLES
 // ##################################################
 
     // array to store all zombies in the game
-zombie zombieArray[20];
+Zombie zombieArray[20];
     // size of floors of the mansion
-const int floor_size = 5;
+const int FLOOR_SIZE = 5;
     // size of rooms in the attic
-const int attic_size = 3;
+const int ATTIC_SIZE = 3;
     // size of rooms on the second floor
-const int second_size = 6;
+const int SECOND_SIZE = 6;
     // size of rooms in the courtyard
-const int outside_size = 2;
+const int OUTSIDE_SIZE = 2;
     // size of rooms on the first floor
-const int first_size = 8;
+const int FIRST_SIZE = 8;
     // size of rooms in the basement
-const int basement_size = 4;
+const int BASEMENT_SIZE = 4;
     // size of enemies array in each room
-const int enemies_array_size = 3;
+const int ENEMIES_ARRAY_SIZE = 3;
     // size of items array in each room
-const int items_array_size = 4;
+const int ITEMS_ARRAY_SIZE = 4;
     // size of room array in each room
-const int next_array_size = 6;
+const int NEXT_ARRAY_SIZE = 6;
     // size of weapons array in each room
-const int weapon_array_size = 4;
+const int WEAPON_ARRAY_SIZE = 4;
     // size of zombies in the game
-const int zombie_amount = 10;
-    // boolean to see if boss is dead or alive
-bool boss_attic = true;
-    // boolean to see if boss is dead or alive
-bool boss_basement = true;
-    // boolean to see if boss is dead or alive
-bool boss_maze = true;
+const int ZOMBIE_AMOUNT = 10;
     // Path size for each point in the maze
-const int available_paths_size = 3;
+const int AVAILABLE_PATHS_SIZE = 3;
+    // boolean to see if boss is dead or alive
+bool is_attic_boss_dead = false;
+    // boolean to see if boss is dead or alive
+bool is_basement_boss_dead = false;
+    // boolean to see if boss is dead or alive
+bool is_maze_boss_dead = false;
     // start of maze
-maze_path *p;
+MazePath *p;
     // boolean for printing choices
-bool printed = false;
+bool is_printed = false;
 
 // ##################################################
 // CONVERSATION ARRAYS
@@ -265,23 +265,23 @@ string boss_damage[5] = {
 // ##################################################
 
     // create all items
-item herbs, key_safe, key_second, key_court, key_art, key_laundry, cutter, emblem, fuse;
+Item herbs, key_safe, key_second, key_court, key_art, key_laundry, cutter, emblem, fuse;
 
     // create all weapons
-weapon pistol, shotgun, knife;
+Weapon pistol, shotgun, knife;
 
     // create all rooms
-room vestibule, main_attic, storage_attic, walk_in_closet, bedroom, guest_room, interior_balcony, solar, storeroom, cy_entrance, cy_maze, main_hall, dining_room, corridor, kitchen, storage_first, art_room, mirror_room, storage_art, secret_passage, kitchen_basement, corridor_basement, laundry_room, main_basement, main_entrance;
+Room vestibule, main_attic, storage_attic, walk_in_closet, bedroom, guest_room, interior_balcony, solar, storeroom, cy_entrance, cy_maze, main_hall, dining_room, corridor, kitchen, storage_first, art_room, mirror_room, storage_art, secret_passage, kitchen_basement, corridor_basement, laundry_room, main_basement, main_entrance;
 
     // Array of rooms for each floor
-room attic[3];
-room second_floor[6];
-room outside[2];
-room first_floor[8];
-room basement[4];
+Room attic[3];
+Room second_floor[6];
+Room outside[2];
+Room first_floor[8];
+Room basement[4];
 
     // Array of paths in the maze
-maze_path paths_array[16];
+MazePath paths_array[16];
 
 // ##################################################
 // CALL FUNCTIONS
@@ -290,69 +290,69 @@ maze_path paths_array[16];
 // Game Start
 void Start(void);
 void Intro(void);
-player CreatePlayer(void);
-room CreateMansion(void);
-void CreateZombies(int zombie_amount);
+Player CreatePlayer(void);
+Room CreateMansion(void);
+void CreateZombies(int ZOMBIE_AMOUNT);
 void CreateMaze(void);
 
 // Game Commands
 void Continue(void);
 void ContinueOne(void);
-void ShowLocation(player *player);
-void ShowInventory(player *player);
-void ShowHealth(player *player);
-void Help(player *player);
-void Action(player *player);
-void SearchRoom(player *player);
-void ChangeWeapon(player *player);
-void ZombieCheck(player *player, room *previous_room);
-void ZombieFight(player *player, int *zombie_amount);
-void PlayerAttack(player *player, int *zombie_amount);
-void ZombieAttack(player *player, int *zombie_amount);
+void ShowLocation(Player *player);
+void ShowInventory(Player *player);
+void ShowHealth(Player *player);
+void Help(Player *player);
+void Action(Player *player);
+void SearchRoom(Player *player);
+void ChangeWeapon(Player *player);
+void ZombieCheck(Player *player, Room *previous_room);
+void ZombieFight(Player *player, int *ZOMBIE_AMOUNT);
+void PlayerAttack(Player *player, int *ZOMBIE_AMOUNT);
+void ZombieAttack(Player *player, int *ZOMBIE_AMOUNT);
 int ZombieAttackLine(int num);
-void Death(player *player);
+void Death(Player *player);
 int TestDodge(int num);
 
 // Boss Fights
-void BossAttic(player *player, room *previous_room);
-void BossBasement(player *player, room *previous_room);
+void BossAttic(Player *player, Room *previous_room);
+void BossBasement(Player *player, Room *previous_room);
 void sleepMilliSecond(long milliSecondInput);
 int Skull(int num);
-void BossFight(player *player, int *boss_life, bool *boss_alive, int boss_life_display);
+void BossFight(Player *player, int *boss_life, bool *boss_alive, int boss_life_display);
     // Maze
-void MazeStart(player *player, maze_path *pointer);
-void MazeDodge(player *player);
+void MazeStart(Player *player, MazePath *pointer);
+void MazeDodge(Player *player);
 void MazeFinalFight(void);
 void MazeStory(void);
 
 // Story Line
-void MainEntrance(player *player);
-void MainHall(player *player);
-void MainHallAction(player *player);
-void Courtyard(player *player);
-void CourtyardAction(player *player);
-void InteriorBalcony(player *player);
-void ArtRoom(player *player);
-void MirrorRoom(player *player);
-void Vestibule(player *player);
-void MainAttic(player *player);
-void StorageAttic(player *player);
-void WalkInCloset(player *player);
-void Bedroom(player *player);
-void GuestRoom(player *player);
-void Solar(player *player);
-void Storeroom(player *player);
-void Maze(player *player);
-void LittleStorage(player *player);
-void SecretPassage(player *player);
-void DiningRoom(player *player);
-void Corridor(player *player);
-void Kitchen(player *player);
-void KitchenBasement(player *player);
-void CorridorBasement(player *player);
-void MainBasement(player *player);
-void LaundryRoom(player *player);
-void StorageChamber(player *player);
+void MainEntrance(Player *player);
+void MainHall(Player *player);
+void MainHallAction(Player *player);
+void Courtyard(Player *player);
+void CourtyardAction(Player *player);
+void InteriorBalcony(Player *player);
+void ArtRoom(Player *player);
+void MirrorRoom(Player *player);
+void Vestibule(Player *player);
+void MainAttic(Player *player);
+void StorageAttic(Player *player);
+void WalkInCloset(Player *player);
+void Bedroom(Player *player);
+void GuestRoom(Player *player);
+void Solar(Player *player);
+void Storeroom(Player *player);
+void Maze(Player *player);
+void LittleStorage(Player *player);
+void SecretPassage(Player *player);
+void DiningRoom(Player *player);
+void Corridor(Player *player);
+void Kitchen(Player *player);
+void KitchenBasement(Player *player);
+void CorridorBasement(Player *player);
+void MainBasement(Player *player);
+void LaundryRoom(Player *player);
+void StorageChamber(Player *player);
 void End(void);
 
 // ##################################################
@@ -363,11 +363,11 @@ int main(void)
 {
     Start();
     Intro();
-    player main_player = CreatePlayer();
+    Player main_player = CreatePlayer();
     CreateMaze();
     p = &paths_array[0];
     CreateMansion();
-    CreateZombies(zombie_amount);
+    CreateZombies(ZOMBIE_AMOUNT);
     MainHall(&main_player);
 }
 
@@ -430,13 +430,13 @@ void Start(void)
     }
     string startstr = " ";
     string buff = "start";
-    printed = false;
+    is_printed = false;
     while(strcmp(startstr, buff) != 0)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n|| To start game type 'start':");
-            printed = true;
+            is_printed = true;
         }
         startstr = get_string(" ");
     }
@@ -461,7 +461,7 @@ void Intro(void)
 // ##################################################
 
 // start in main hall
-void MainHall(player *player)
+void MainHall(Player *player)
 {
     (*player).current_room = &main_hall;
     if (main_hall.visited == false)
@@ -483,7 +483,7 @@ void MainHall(player *player)
 }
 
 // Function for the main entrance, also the goal
-void MainEntrance(player *player)
+void MainEntrance(Player *player)
 {
     if(player->inventory[7]->picked_up == true)
     {
@@ -510,7 +510,7 @@ void MainEntrance(player *player)
 }
 
 // Function for the courtyard entrance
-void Courtyard(player *player)
+void Courtyard(Player *player)
 {
 
     if ((*player).inventory[3]->picked_up != true)
@@ -523,7 +523,7 @@ void Courtyard(player *player)
     }
     else
     {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &cy_entrance;
     ZombieCheck(player, previous_room);
     if (cy_entrance.visited == false)
@@ -546,7 +546,7 @@ void Courtyard(player *player)
 }
 
 // Function for the interior balcony
-void InteriorBalcony(player *player)
+void InteriorBalcony(Player *player)
 {
     (*player).current_room = &interior_balcony;
     if (interior_balcony.visited == false)
@@ -568,7 +568,7 @@ void InteriorBalcony(player *player)
 }
 
 // Function for the art room
-void ArtRoom(player *player)
+void ArtRoom(Player *player)
 {
     if ((*player).inventory[4]->picked_up != true)
     {
@@ -580,7 +580,7 @@ void ArtRoom(player *player)
     }
     else
     {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &art_room;
     ZombieCheck(player, previous_room);
     if (art_room.visited == false)
@@ -603,7 +603,7 @@ void ArtRoom(player *player)
 }
 
 // Function for the mirror room
-void MirrorRoom(player *player)
+void MirrorRoom(Player *player)
 {
     if ((*player).inventory[6]->picked_up != true)
     {
@@ -615,7 +615,7 @@ void MirrorRoom(player *player)
     }
     else
     {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &mirror_room;
     ZombieCheck(player, previous_room);
     if (mirror_room.visited == false)
@@ -638,9 +638,9 @@ void MirrorRoom(player *player)
 }
 
 // Function for the Vestibule - Riddle inside!
-void Vestibule(player *player)
+void Vestibule(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &vestibule;
     ZombieCheck(player, previous_room);
     if (vestibule.visited == false)
@@ -671,9 +671,9 @@ void Vestibule(player *player)
 }
 
 // Function for the Main Attic (Laboratory) - Boss inside!
-void MainAttic(player *player)
+void MainAttic(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &main_attic;
     ZombieCheck(player, previous_room);
     if (main_attic.visited == false)
@@ -695,9 +695,9 @@ void MainAttic(player *player)
 }
 
 // Function for the Storage attic
-void StorageAttic(player *player)
+void StorageAttic(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &storage_attic;
     ZombieCheck(player, previous_room);
     if ((*player).inventory[1]->picked_up != true)
@@ -737,9 +737,9 @@ void StorageAttic(player *player)
 }
 
 // Function for the Walk-in closet
-void WalkInCloset(player *player)
+void WalkInCloset(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &walk_in_closet;
     ZombieCheck(player, previous_room);
     if (walk_in_closet.visited == false)
@@ -763,7 +763,7 @@ void WalkInCloset(player *player)
 }
 
 // Function for the master bedroom
-void Bedroom(player *player)
+void Bedroom(Player *player)
 {
     if ((*player).inventory[2]->picked_up != true)
     {
@@ -775,7 +775,7 @@ void Bedroom(player *player)
     }
     else
     {
-        room *previous_room = (*player).current_room;
+        Room *previous_room = (*player).current_room;
         (*player).current_room = &bedroom;
         ZombieCheck(player, previous_room);
         if (bedroom.visited == false)
@@ -801,7 +801,7 @@ void Bedroom(player *player)
 }
 
 // Function for the guest room - Riddle inside!
-void GuestRoom(player *player)
+void GuestRoom(Player *player)
 {
     if ((*player).current_room == &interior_balcony)
     {
@@ -811,7 +811,7 @@ void GuestRoom(player *player)
         Continue();
         Action(player);
     }
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &guest_room;
     ZombieCheck(player, previous_room);
     if (guest_room.visited == false)
@@ -840,7 +840,7 @@ void GuestRoom(player *player)
 }
 
 // Function for the solar
-void Solar(player *player)
+void Solar(Player *player)
 {
     if ((*player).inventory[2]->picked_up != true)
     {
@@ -852,7 +852,7 @@ void Solar(player *player)
     }
     else
     {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &solar;
     ZombieCheck(player, previous_room);
     if (solar.visited == false)
@@ -875,7 +875,7 @@ void Solar(player *player)
 }
 
 // Function for the storeroom
-void Storeroom(player *player)
+void Storeroom(Player *player)
 {
     if ((*player).inventory[8]->picked_up != true)
     {
@@ -897,7 +897,7 @@ void Storeroom(player *player)
     }
     else
     {
-        room *previous_room = (*player).current_room;
+        Room *previous_room = (*player).current_room;
         (*player).current_room = &storeroom;
         ZombieCheck(player, previous_room);
         if (storeroom.visited == false)
@@ -922,9 +922,9 @@ void Storeroom(player *player)
 }
 
 // Function for the maze - Riddle and Boss inside!
-void Maze(player *player)
+void Maze(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &cy_maze;
     ZombieCheck(player, previous_room);
     if (cy_maze.visited == false)
@@ -946,9 +946,9 @@ void Maze(player *player)
 }
 
 // Function for the little storage of the art room
-void LittleStorage(player *player)
+void LittleStorage(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &storage_art;
     ZombieCheck(player, previous_room);
     if (storage_art.visited == false)
@@ -970,9 +970,9 @@ void LittleStorage(player *player)
 }
 
 // Function for the secret passage
-void SecretPassage(player *player)
+void SecretPassage(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &secret_passage;
     ZombieCheck(player, previous_room);
     if (secret_passage.visited == false)
@@ -998,9 +998,9 @@ void SecretPassage(player *player)
 }
 
 // Function for the dining room - Riddle inside!
-void DiningRoom(player *player)
+void DiningRoom(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &dining_room;
     ZombieCheck(player, previous_room);
     if (dining_room.visited == false)
@@ -1030,9 +1030,9 @@ void DiningRoom(player *player)
 }
 
 // Function for the corridor
-void Corridor(player *player)
+void Corridor(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &corridor;
     ZombieCheck(player, previous_room);
     if (corridor.visited == false)
@@ -1056,9 +1056,9 @@ void Corridor(player *player)
 }
 
 // Function for the kitchen
-void Kitchen(player *player)
+void Kitchen(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &kitchen;
     ZombieCheck(player, previous_room);
     if (kitchen.visited == false)
@@ -1085,9 +1085,9 @@ void Kitchen(player *player)
 }
 
 // Function for the kitchen in the basement
-void KitchenBasement(player *player)
+void KitchenBasement(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &kitchen_basement;
     ZombieCheck(player, previous_room);
     if (kitchen_basement.visited == false)
@@ -1114,9 +1114,9 @@ void KitchenBasement(player *player)
 }
 
 // Function for the corridor in the basement
-void CorridorBasement(player *player)
+void CorridorBasement(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &corridor_basement;
     ZombieCheck(player, previous_room);
     if (corridor_basement.visited == false)
@@ -1143,9 +1143,9 @@ void CorridorBasement(player *player)
 }
 
 // Function for the main basement - Boss inside
-void MainBasement(player *player)
+void MainBasement(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &main_basement;
     ZombieCheck(player, previous_room);
     if (main_basement.visited == false)
@@ -1171,7 +1171,7 @@ void MainBasement(player *player)
 }
 
 // Function for the Laundry room - Riddle inside!
-void LaundryRoom(player *player)
+void LaundryRoom(Player *player)
 {
     if ((*player).inventory[5]->picked_up != true)
     {
@@ -1183,7 +1183,7 @@ void LaundryRoom(player *player)
     }
     else
     {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &laundry_room;
     ZombieCheck(player, previous_room);
     if (laundry_room.visited == false)
@@ -1213,9 +1213,9 @@ void LaundryRoom(player *player)
 }
 
 // Function for the storage chamber first floor
-void StorageChamber(player *player)
+void StorageChamber(Player *player)
 {
-    room *previous_room = (*player).current_room;
+    Room *previous_room = (*player).current_room;
     (*player).current_room = &storage_first;
     ZombieCheck(player, previous_room);
     if (storage_first.visited == false)
@@ -1283,7 +1283,7 @@ void MazeStory(void)
 }
 
 // Function for the Boss fight in the attic
-void BossAttic(player *player, room *previous_room)
+void BossAttic(Player *player, Room *previous_room)
 {
     printf("\nLast chance. Do you really want to enter?\n");
     printf("Be ready for whatever nightmare lies beyond this door.\n");
@@ -1345,7 +1345,7 @@ void BossAttic(player *player, room *previous_room)
 }
 
 // Function for the boss fight in the basement
-void BossBasement(player *player, room *previous_room)
+void BossBasement(Player *player, Room *previous_room)
 {
     printf("\nLast chance. Do you really want to enter?\n");
     printf("Be ready for whatever nightmare lies beyond this door.\n");
@@ -1435,7 +1435,7 @@ void End(void)
 // ##################################################
 
 // Create all rooms, name them, fill them with items, weapons, zombies and possible pathes
-room CreateMansion(void)
+Room CreateMansion(void)
 {
     int counter_zombies = 0;
     int counter = 0;
@@ -1450,28 +1450,28 @@ room CreateMansion(void)
     attic[0] = vestibule;
     vestibule.name = "vestibule";
     vestibule.floor_name = "attic";
-    vestibule.zombie_amount = 0;
+    vestibule.ZOMBIE_AMOUNT = 0;
     vestibule.item_amount = 0;
     vestibule.weapon_amount = 0;
     vestibule.func = &Vestibule;
     vestibule.riddle = true;
     vestibule.next_room[0] = &main_attic;
     vestibule.next_room[1] = &walk_in_closet;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         vestibule.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         vestibule.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         vestibule.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < vestibule.zombie_amount)
+        if (counter < vestibule.ZOMBIE_AMOUNT)
         {
             vestibule.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1489,28 +1489,28 @@ room CreateMansion(void)
     attic[1] = main_attic;
     main_attic.name = "laboratory";
     main_attic.floor_name = "attic";
-    main_attic.zombie_amount = 0;
+    main_attic.ZOMBIE_AMOUNT = 0;
     main_attic.item_amount = 0;
     main_attic.weapon_amount = 0;
     main_attic.func = &MainAttic;
     main_attic.riddle = false;
     main_attic.next_room[0] = &vestibule;
     main_attic.next_room[1] = &storage_attic;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         main_attic.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         main_attic.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         main_attic.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < main_attic.zombie_amount)
+        if (counter < main_attic.ZOMBIE_AMOUNT)
         {
             main_attic.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1528,7 +1528,7 @@ room CreateMansion(void)
     attic[2] = storage_attic;
     storage_attic.name = "attic storage room";
     storage_attic.floor_name = "attic";
-    storage_attic.zombie_amount = 0;
+    storage_attic.ZOMBIE_AMOUNT = 0;
     storage_attic.item_amount = 2;
     storage_attic.weapon_amount = 1;
     storage_attic.func = &StorageAttic;
@@ -1537,21 +1537,21 @@ room CreateMansion(void)
     storage_attic.items[0] = &herbs;
     storage_attic.items[1] = &key_art;
     storage_attic.next_room[0] = &main_attic;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         storage_attic.next_room[i] = NULL;
     }
-    for (int i = 2; i < items_array_size; i++)
+    for (int i = 2; i < ITEMS_ARRAY_SIZE; i++)
     {
         storage_attic.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         storage_attic.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < storage_attic.zombie_amount)
+        if (counter < storage_attic.ZOMBIE_AMOUNT)
         {
             storage_attic.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1566,7 +1566,7 @@ room CreateMansion(void)
     counter = 0;
 
     // set all "visited" to false and add zombies to room
-    for (int i = 0; i < attic_size; i++)
+    for (int i = 0; i < ATTIC_SIZE; i++)
     {
         attic[i].visited = false;
         attic[i].searched = 0;
@@ -1576,28 +1576,28 @@ room CreateMansion(void)
     second_floor[0] = walk_in_closet;
     walk_in_closet.name = "walk-in closet";
     walk_in_closet.floor_name = "2nd floor";
-    walk_in_closet.zombie_amount = 1;
+    walk_in_closet.ZOMBIE_AMOUNT = 1;
     walk_in_closet.item_amount = 0;
     walk_in_closet.weapon_amount = 0;
     walk_in_closet.func = &WalkInCloset;
     walk_in_closet.riddle = false;
     walk_in_closet.next_room[0] = &vestibule;
     walk_in_closet.next_room[1] = &bedroom;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         walk_in_closet.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         walk_in_closet.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         walk_in_closet.weapons[i] = NULL;
     }
-        for (int i = 1; i < enemies_array_size; i++)
+        for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < walk_in_closet.zombie_amount)
+        if (counter < walk_in_closet.ZOMBIE_AMOUNT)
         {
             walk_in_closet.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1615,7 +1615,7 @@ room CreateMansion(void)
     second_floor[1] = bedroom;
     bedroom.name = "master bedroom";
     bedroom.floor_name = "2nd floor";
-    bedroom.zombie_amount = 0;
+    bedroom.ZOMBIE_AMOUNT = 0;
     bedroom.item_amount = 0;
     bedroom.weapon_amount = 0;
     bedroom.func = &Bedroom;
@@ -1623,21 +1623,21 @@ room CreateMansion(void)
     bedroom.next_room[0] = &interior_balcony;
     bedroom.next_room[1] = &walk_in_closet;
     bedroom.next_room[2] = &guest_room;
-    for (int i = 3; i < next_array_size; i++)
+    for (int i = 3; i < NEXT_ARRAY_SIZE; i++)
     {
         bedroom.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         bedroom.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         bedroom.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < bedroom.zombie_amount)
+        if (counter < bedroom.ZOMBIE_AMOUNT)
         {
             bedroom.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1655,7 +1655,7 @@ room CreateMansion(void)
     second_floor[2] = guest_room;
     guest_room.name = "guest room";
     guest_room.floor_name = "2nd floor";
-    guest_room.zombie_amount = 0;
+    guest_room.ZOMBIE_AMOUNT = 0;
     guest_room.item_amount = 1;
     guest_room.weapon_amount = 3;
     guest_room.func = &GuestRoom;
@@ -1665,21 +1665,21 @@ room CreateMansion(void)
     guest_room.weapons[2] = &shotgun;
     guest_room.items[0] = &herbs;
     guest_room.next_room[0] = &bedroom;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         guest_room.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         guest_room.items[i] = NULL;
     }
-    for (int i = 3; i < weapon_array_size; i++)
+    for (int i = 3; i < WEAPON_ARRAY_SIZE; i++)
     {
         guest_room.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < guest_room.zombie_amount)
+        if (counter < guest_room.ZOMBIE_AMOUNT)
         {
             guest_room.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1697,7 +1697,7 @@ room CreateMansion(void)
     second_floor[3] = interior_balcony;
     interior_balcony.name = "interior balcony";
     interior_balcony.floor_name = "2nd floor";
-    interior_balcony.zombie_amount = 0;
+    interior_balcony.ZOMBIE_AMOUNT = 0;
     interior_balcony.item_amount = 1;
     interior_balcony.weapon_amount = 0;
     interior_balcony.func = &InteriorBalcony;
@@ -1707,21 +1707,21 @@ room CreateMansion(void)
     interior_balcony.next_room[1] = &guest_room;
     interior_balcony.next_room[2] = &solar;
     interior_balcony.next_room[3] = &main_hall;
-    for (int i = 4; i < next_array_size; i++)
+    for (int i = 4; i < NEXT_ARRAY_SIZE; i++)
     {
         interior_balcony.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         interior_balcony.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         interior_balcony.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < interior_balcony.zombie_amount)
+        if (counter < interior_balcony.ZOMBIE_AMOUNT)
         {
             interior_balcony.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1739,28 +1739,28 @@ room CreateMansion(void)
     second_floor[4] = solar;
     solar.name = "solar";
     solar.floor_name = "2nd floor";
-    solar.zombie_amount = 2;
+    solar.ZOMBIE_AMOUNT = 2;
     solar.item_amount = 0;
     solar.weapon_amount = 0;
     solar.func = &Solar;
     solar.riddle = false;
     solar.next_room[0] = &interior_balcony;
     solar.next_room[1] = &storeroom;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         solar.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         solar.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         solar.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < solar.zombie_amount)
+        if (counter < solar.ZOMBIE_AMOUNT)
         {
             solar.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1778,7 +1778,7 @@ room CreateMansion(void)
     second_floor[5] = storeroom;
     storeroom.name = "storeroom";
     storeroom.floor_name = "2nd floor";
-    storeroom.zombie_amount = 0;
+    storeroom.ZOMBIE_AMOUNT = 0;
     storeroom.item_amount = 1;
     storeroom.weapon_amount = 1;
     storeroom.func = &Storeroom;
@@ -1787,21 +1787,21 @@ room CreateMansion(void)
     storeroom.items[0] = &cutter;
     storeroom.next_room[0] = &solar;
     storeroom.next_room[1] = &kitchen_basement;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         storeroom.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         storeroom.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         storeroom.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < storeroom.zombie_amount)
+        if (counter < storeroom.ZOMBIE_AMOUNT)
         {
             storeroom.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1816,7 +1816,7 @@ room CreateMansion(void)
     counter = 0;
 
     // set all "visited" to false and add zombies to room
-    for (int i = 0; i < second_size; i++)
+    for (int i = 0; i < SECOND_SIZE; i++)
     {
         second_floor[i].visited = false;
         second_floor[i].searched = 0;
@@ -1826,7 +1826,7 @@ room CreateMansion(void)
     outside[0] = cy_entrance;
     cy_entrance.name = "courtyard";
     cy_entrance.floor_name = "outside";
-    cy_entrance.zombie_amount = 0;
+    cy_entrance.ZOMBIE_AMOUNT = 0;
     cy_entrance.item_amount = 0;
     cy_entrance.weapon_amount = 1;
     cy_entrance.func = &Courtyard;
@@ -1834,21 +1834,21 @@ room CreateMansion(void)
     cy_entrance.weapons[0] = &shotgun;
     cy_entrance.next_room[0] = &main_hall;
     cy_entrance.next_room[1] = &cy_maze;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         cy_entrance.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         cy_entrance.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         cy_entrance.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < cy_entrance.zombie_amount)
+        if (counter < cy_entrance.ZOMBIE_AMOUNT)
         {
             cy_entrance.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1866,28 +1866,28 @@ room CreateMansion(void)
     outside[1] = cy_maze;
     cy_maze.name = "maze";
     cy_maze.floor_name = "outside";
-    cy_maze.zombie_amount = 0;
+    cy_maze.ZOMBIE_AMOUNT = 0;
     cy_maze.item_amount = 1;
     cy_maze.weapon_amount = 0;
     cy_maze.func = &Maze;
     cy_maze.riddle = false;
     cy_maze.items[0] = &emblem;
     cy_maze.next_room[0] = &cy_entrance;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         cy_maze.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         cy_maze.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         cy_maze.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < cy_maze.zombie_amount)
+        if (counter < cy_maze.ZOMBIE_AMOUNT)
         {
             cy_maze.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1902,7 +1902,7 @@ room CreateMansion(void)
     counter = 0;    
 
     // set all "visited" to false and add zombies to room
-    for (int i = 0; i < outside_size; i++)
+    for (int i = 0; i < OUTSIDE_SIZE; i++)
     {
         outside[i].visited = false;
         outside[i].searched = 0;
@@ -1912,7 +1912,7 @@ room CreateMansion(void)
     first_floor[0] = main_hall;
     main_hall.name = "main hall";
     main_hall.floor_name = "1st floor";
-    main_hall.zombie_amount = 0;
+    main_hall.ZOMBIE_AMOUNT = 0;
     main_hall.item_amount = 0;
     main_hall.weapon_amount = 0;
     main_hall.func = &MainHall;
@@ -1923,21 +1923,21 @@ room CreateMansion(void)
     main_hall.next_room[3] = &cy_entrance;
     main_hall.next_room[4] = &dining_room;
     main_hall.next_room[5] = &main_entrance;
-    for (int i = 6; i < next_array_size; i++)
+    for (int i = 6; i < NEXT_ARRAY_SIZE; i++)
     {
         main_hall.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         main_hall.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         main_hall.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < main_hall.zombie_amount)
+        if (counter < main_hall.ZOMBIE_AMOUNT)
         {
             main_hall.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1955,28 +1955,28 @@ room CreateMansion(void)
     first_floor[1] = art_room;
     art_room.name = "art room";
     art_room.floor_name = "1st floor";
-    art_room.zombie_amount = 2;
+    art_room.ZOMBIE_AMOUNT = 2;
     art_room.item_amount = 0;
     art_room.weapon_amount = 0;
     art_room.func = &ArtRoom;
     art_room.riddle = false;
     art_room.next_room[0] = &storage_art;
     art_room.next_room[1] = &main_hall;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         art_room.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         art_room.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         art_room.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < art_room.zombie_amount)
+        if (counter < art_room.ZOMBIE_AMOUNT)
         {
             art_room.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -1994,7 +1994,7 @@ room CreateMansion(void)
     first_floor[2] = storage_art;
     storage_art.name = "a little storage room";
     storage_art.floor_name = "1st floor";
-    storage_art.zombie_amount = 0;
+    storage_art.ZOMBIE_AMOUNT = 0;
     storage_art.item_amount = 1;
     storage_art.weapon_amount = 1;
     storage_art.func = &LittleStorage;
@@ -2002,21 +2002,21 @@ room CreateMansion(void)
     storage_art.weapons[0] = &pistol;
     storage_art.items[0] = &fuse;
     storage_art.next_room[0] = &art_room;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         storage_art.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         storage_art.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         storage_art.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < storage_art.zombie_amount)
+        if (counter < storage_art.ZOMBIE_AMOUNT)
         {
             storage_art.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2034,28 +2034,28 @@ room CreateMansion(void)
     first_floor[3] = mirror_room;
     mirror_room.name = "mirror room";
     mirror_room.floor_name = "1st floor";
-    mirror_room.zombie_amount = 2;
+    mirror_room.ZOMBIE_AMOUNT = 2;
     mirror_room.item_amount = 0;
     mirror_room.weapon_amount = 0;
     mirror_room.func = &MirrorRoom;
     mirror_room.riddle = false;
     mirror_room.next_room[0] = &main_hall;
     mirror_room.next_room[1] = &secret_passage;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         mirror_room.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         mirror_room.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         mirror_room.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < mirror_room.zombie_amount)
+        if (counter < mirror_room.ZOMBIE_AMOUNT)
         {
             mirror_room.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2073,7 +2073,7 @@ room CreateMansion(void)
     first_floor[4] = secret_passage;
     secret_passage.name = "secret passage";
     secret_passage.floor_name = "1st floor";
-    secret_passage.zombie_amount = 0;
+    secret_passage.ZOMBIE_AMOUNT = 0;
     secret_passage.item_amount = 2;
     secret_passage.weapon_amount = 1;
     secret_passage.func = &SecretPassage;
@@ -2082,21 +2082,21 @@ room CreateMansion(void)
     secret_passage.items[0] = &key_safe;
     secret_passage.items[1] = &herbs;
     secret_passage.next_room[0] = &mirror_room;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         secret_passage.next_room[i] = NULL;
     }
-    for (int i = 2; i < items_array_size; i++)
+    for (int i = 2; i < ITEMS_ARRAY_SIZE; i++)
     {
         secret_passage.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         secret_passage.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < secret_passage.zombie_amount)
+        if (counter < secret_passage.ZOMBIE_AMOUNT)
         {
             secret_passage.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2114,7 +2114,7 @@ room CreateMansion(void)
     first_floor[5] = dining_room;
     dining_room.name = "dining room";
     dining_room.floor_name = "1st floor";
-    dining_room.zombie_amount = 0;
+    dining_room.ZOMBIE_AMOUNT = 0;
     dining_room.item_amount = 0;
     dining_room.weapon_amount = 1;
     dining_room.func = &DiningRoom;
@@ -2122,21 +2122,21 @@ room CreateMansion(void)
     dining_room.weapons[0] = &pistol;
     dining_room.next_room[0] = &main_hall;
     dining_room.next_room[1] = &corridor;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         dining_room.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         dining_room.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         dining_room.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < dining_room.zombie_amount)
+        if (counter < dining_room.ZOMBIE_AMOUNT)
         {
             dining_room.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2154,28 +2154,28 @@ room CreateMansion(void)
     first_floor[6] = corridor;
     corridor.name = "corridor";
     corridor.floor_name = "1st floor";
-    corridor.zombie_amount = 1;
+    corridor.ZOMBIE_AMOUNT = 1;
     corridor.item_amount = 0;
     corridor.weapon_amount = 0;
     corridor.func = &Corridor;
     corridor.riddle = false;
     corridor.next_room[0] = &kitchen;
     corridor.next_room[1] = &dining_room;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         corridor.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         corridor.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         corridor.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < corridor.zombie_amount)
+        if (counter < corridor.ZOMBIE_AMOUNT)
         {
             corridor.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2193,7 +2193,7 @@ room CreateMansion(void)
     first_floor[7] = kitchen;
     kitchen.name = "kitchen";
     kitchen.floor_name = "1st floor";
-    kitchen.zombie_amount = 0;
+    kitchen.ZOMBIE_AMOUNT = 0;
     kitchen.item_amount = 0;
     kitchen.weapon_amount = 1;
     kitchen.func = &Kitchen;
@@ -2201,21 +2201,21 @@ room CreateMansion(void)
     kitchen.weapons[0] = &pistol;
     kitchen.next_room[0] = &storage_first;
     kitchen.next_room[1] = &corridor;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         kitchen.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         kitchen.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         kitchen.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < kitchen.zombie_amount)
+        if (counter < kitchen.ZOMBIE_AMOUNT)
         {
             kitchen.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2233,7 +2233,7 @@ room CreateMansion(void)
     first_floor[8] = storage_first;
     storage_first.name = "storage chamber";
     storage_first.floor_name = "1st floor";
-    storage_first.zombie_amount = 1;
+    storage_first.ZOMBIE_AMOUNT = 1;
     storage_first.item_amount = 2;
     storage_first.weapon_amount = 0;
     storage_first.func = &StorageChamber;
@@ -2241,21 +2241,21 @@ room CreateMansion(void)
     storage_first.items[0] = &herbs;
     storage_first.items[1] = &key_second;
     storage_first.next_room[0] = &kitchen;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         storage_first.next_room[i] = NULL;
     }
-    for (int i = 2; i < items_array_size; i++)
+    for (int i = 2; i < ITEMS_ARRAY_SIZE; i++)
     {
         storage_first.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         storage_first.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < storage_first.zombie_amount)
+        if (counter < storage_first.ZOMBIE_AMOUNT)
         {
             storage_first.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2270,7 +2270,7 @@ room CreateMansion(void)
     counter = 0;    
 
     // set all "visited" to false and add zombies to room
-    for (int i = 0; i < first_size; i++)
+    for (int i = 0; i < FIRST_SIZE; i++)
     {
         first_floor[i].visited = false;
         first_floor[i].searched = 0;
@@ -2280,7 +2280,7 @@ room CreateMansion(void)
     basement[0] = kitchen_basement;
     kitchen_basement.name = "kitchen";
     kitchen_basement.floor_name = "basement";
-    kitchen_basement.zombie_amount = 0;
+    kitchen_basement.ZOMBIE_AMOUNT = 0;
     kitchen_basement.item_amount = 1;
     kitchen_basement.weapon_amount = 0;
     kitchen_basement.func = &KitchenBasement;
@@ -2288,21 +2288,21 @@ room CreateMansion(void)
     kitchen_basement.items[0] = &herbs;
     kitchen_basement.next_room[0] = &storeroom;
     kitchen_basement.next_room[1] = &corridor_basement;
-    for (int i = 2; i < next_array_size; i++)
+    for (int i = 2; i < NEXT_ARRAY_SIZE; i++)
     {
         kitchen_basement.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         kitchen_basement.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         kitchen_basement.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < kitchen_basement.zombie_amount)
+        if (counter < kitchen_basement.ZOMBIE_AMOUNT)
         {
             kitchen_basement.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2320,7 +2320,7 @@ room CreateMansion(void)
     basement[1] = corridor_basement;
     corridor_basement.name = "corridor";
     corridor_basement.floor_name = "basement";
-    corridor_basement.zombie_amount = 1;
+    corridor_basement.ZOMBIE_AMOUNT = 1;
     corridor_basement.item_amount = 0;
     corridor_basement.weapon_amount = 1;
     corridor_basement.func = &CorridorBasement;
@@ -2329,21 +2329,21 @@ room CreateMansion(void)
     corridor_basement.next_room[0] = &kitchen_basement;
     corridor_basement.next_room[1] = &main_basement;
     corridor_basement.next_room[2] = &laundry_room;
-    for (int i = 3; i < next_array_size; i++)
+    for (int i = 3; i < NEXT_ARRAY_SIZE; i++)
     {
         corridor_basement.next_room[i] = NULL;
     }
-    for (int i = 0; i < items_array_size; i++)
+    for (int i = 0; i < ITEMS_ARRAY_SIZE; i++)
     {
         corridor_basement.items[i] = NULL;
     }
-    for (int i = 1; i < weapon_array_size; i++)
+    for (int i = 1; i < WEAPON_ARRAY_SIZE; i++)
     {
         corridor_basement.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < corridor_basement.zombie_amount)
+        if (counter < corridor_basement.ZOMBIE_AMOUNT)
         {
             corridor_basement.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2361,28 +2361,28 @@ room CreateMansion(void)
     basement[2] = main_basement;
     main_basement.name = "staircase hall";
     main_basement.floor_name = "basement";
-    main_basement.zombie_amount = 0;
+    main_basement.ZOMBIE_AMOUNT = 0;
     main_basement.item_amount = 1;
     main_basement.weapon_amount = 0;
     main_basement.func = &MainBasement;
     main_basement.riddle = false;
     main_basement.items[0] = &key_laundry;
     main_basement.next_room[0] = &corridor_basement;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         main_basement.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         main_basement.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         main_basement.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < main_basement.zombie_amount)
+        if (counter < main_basement.ZOMBIE_AMOUNT)
         {
             main_basement.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2400,28 +2400,28 @@ room CreateMansion(void)
     basement[3] = laundry_room;
     laundry_room.name = "laundry room";
     laundry_room.floor_name = "basement";
-    laundry_room.zombie_amount = 0;
+    laundry_room.ZOMBIE_AMOUNT = 0;
     laundry_room.item_amount = 1;
     laundry_room.weapon_amount = 0;
     laundry_room.func = &LaundryRoom;
     laundry_room.riddle = true;
     laundry_room.items[0] = &key_court;
     laundry_room.next_room[0] = &corridor_basement;
-    for (int i = 1; i < next_array_size; i++)
+    for (int i = 1; i < NEXT_ARRAY_SIZE; i++)
     {
         laundry_room.next_room[i] = NULL;
     }
-    for (int i = 1; i < items_array_size; i++)
+    for (int i = 1; i < ITEMS_ARRAY_SIZE; i++)
     {
         laundry_room.items[i] = NULL;
     }
-    for (int i = 0; i < weapon_array_size; i++)
+    for (int i = 0; i < WEAPON_ARRAY_SIZE; i++)
     {
         laundry_room.weapons[i] = NULL;
     }
-    for (int i = 1; i < enemies_array_size; i++)
+    for (int i = 1; i < ENEMIES_ARRAY_SIZE; i++)
     {
-        if (counter < laundry_room.zombie_amount)
+        if (counter < laundry_room.ZOMBIE_AMOUNT)
         {
             laundry_room.enemies[counter] = &zombieArray[counter_zombies];
             counter_zombies ++;
@@ -2436,7 +2436,7 @@ room CreateMansion(void)
     counter = 0;
 
     // set all "visited" to false and add zombies to room
-    for (int i = 0; i < basement_size; i++)
+    for (int i = 0; i < BASEMENT_SIZE; i++)
     {
         basement[i].visited = false;
         basement[i].searched = 0;
@@ -2444,9 +2444,9 @@ room CreateMansion(void)
 }
 
 // Create all the zombies in the game and fill the array
-void CreateZombies(int zombie_amount)
+void CreateZombies(int ZOMBIE_AMOUNT)
 {
-    for (int i = 0; i < zombie_amount; i++)
+    for (int i = 0; i < ZOMBIE_AMOUNT; i++)
     {
         zombieArray[i].min_attack = 10;
         zombieArray[i].max_attack = 30;
@@ -2461,7 +2461,7 @@ void CreateZombies(int zombie_amount)
 // ##################################################
 
 // Create player, items and weapons and assign them to the player
-player CreatePlayer(void)
+Player CreatePlayer(void)
 {
     // set item stats
         // 1. Herbs to increase HP
@@ -2524,7 +2524,7 @@ player CreatePlayer(void)
         knife.picked_up = true;
     
     // Create Player
-    player new_player;
+    Player new_player;
     new_player.inventory[0] = &herbs;
     new_player.inventory[1] = &key_safe;
     new_player.inventory[2] = &key_second;
@@ -2550,7 +2550,7 @@ player CreatePlayer(void)
 // ##################################################
 
 // Gives the player the ability to move through the mansion and call for help functions
-void Action(player *player)
+void Action(Player *player)
 {
     printf("\nWhat do you want to do?\n");
     int index = 0;
@@ -2569,13 +2569,13 @@ void Action(player *player)
     }
     printf("'9' - search the %s\n", (*player).current_room->name);
     int input = 100;
-    printed = false;
+    is_printed = false;
     while (input < 0 || input > 9)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Your choice:");
-            printed = true;
+            is_printed = true;
         }
         input = get_int(" ");
     }
@@ -2595,7 +2595,7 @@ void Action(player *player)
 }
 
 // Search the room for items
-void SearchRoom(player *player)
+void SearchRoom(Player *player)
 {
     if ((*player).current_room->item_amount == 0 && (*player).current_room->weapon_amount == 0)
     {
@@ -2648,35 +2648,35 @@ void SearchRoom(player *player)
 }
 
 // Check if zombies are in the room
-void ZombieCheck(player *player, room *previous_room)
+void ZombieCheck(Player *player, Room *previous_room)
 {
-    int zombie_amount = (*player).current_room->zombie_amount;
+    int ZOMBIE_AMOUNT = (*player).current_room->ZOMBIE_AMOUNT;
     int dead_zombies = 0;
-    if (zombie_amount > 0)
+    if (ZOMBIE_AMOUNT > 0)
     {   
-        for (int i = 0; i < zombie_amount; i++)
+        for (int i = 0; i < ZOMBIE_AMOUNT; i++)
         {
             if ((*player).current_room->enemies[i]->is_dead == true)
             {
                 dead_zombies ++;
             }
         }
-        if (zombie_amount - dead_zombies > 0)
+        if (ZOMBIE_AMOUNT - dead_zombies > 0)
         {
-            ZombieFight(player, &zombie_amount);
+            ZombieFight(player, &ZOMBIE_AMOUNT);
         }
     }
-    else if (player->current_room == &main_attic && boss_attic == true)
+    else if (player->current_room == &main_attic && is_attic_boss_dead == false)
     {
         BossAttic(player, previous_room);
-        boss_attic = false;
+        is_attic_boss_dead = true;
     }
-    else if (player->current_room == &main_basement && boss_basement == true)
+    else if (player->current_room == &main_basement && is_basement_boss_dead == false)
     {
         BossBasement(player, previous_room);
-        boss_basement = false;
+        is_basement_boss_dead = true;
     }
-    else if (player->current_room == &cy_maze && boss_maze == true)
+    else if (player->current_room == &cy_maze && is_maze_boss_dead == false)
     {
         printf("\nLast chance. Do you really want to enter?\n");
         printf("Be ready for whatever nightmare lies there.\n");
@@ -2700,7 +2700,7 @@ void ZombieCheck(player *player, room *previous_room)
 }
 
 // Decision if zombies are fought or not / then starts the fight or goes back to the previous room
-void ZombieFight(player *player, int *zombie_amount)
+void ZombieFight(Player *player, int *ZOMBIE_AMOUNT)
 {
     printf("\n#################### ZOMBIES #########################\n");
     int random_int = rand() % 5;
@@ -2709,7 +2709,7 @@ void ZombieFight(player *player, int *zombie_amount)
     // Give choice if you want to fight or run away
     printf("\nWhat are you going to do?\n");
     printf("\n'0' - Change weapon, then fight.");
-    if (player->current_room->zombie_amount > 1)
+    if (player->current_room->ZOMBIE_AMOUNT > 1)
     {
         printf("\n'1' - Fight the [2] zombies.\n");
     }
@@ -2724,13 +2724,13 @@ void ZombieFight(player *player, int *zombie_amount)
         counter ++;
     }
     int answer = 100;
-    printed = false;
+    is_printed = false;
     while (answer < 0 || answer > counter+2)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Your choice:");
-            printed = true;
+            is_printed = true;
         }
         answer = get_int(" ");
     }
@@ -2749,10 +2749,10 @@ void ZombieFight(player *player, int *zombie_amount)
         // 80% chance of player starting
         if (random_int < 80)
         {
-            while (*zombie_amount != 0)
+            while (*ZOMBIE_AMOUNT != 0)
             {
-                PlayerAttack(player, zombie_amount);
-                if (*zombie_amount <= 0)
+                PlayerAttack(player, ZOMBIE_AMOUNT);
+                if (*ZOMBIE_AMOUNT <= 0)
                 {
                     int random = rand() % 5;
                     printf("You shot with your %s || %s -1\n", (*player).active_weapon->name, (*player).active_weapon->ammo_name);
@@ -2760,18 +2760,18 @@ void ZombieFight(player *player, int *zombie_amount)
                     ContinueOne();
                     return;
                 }
-                ZombieAttack(player, zombie_amount);
+                ZombieAttack(player, ZOMBIE_AMOUNT);
             }
         }
         // 20% chance of zombie starting
         else if (random_int >= 80)
         {
             printf("The zombie lunged forward, its decaying claws reaching out to tear into your flesh in a savage and unrelenting attack.\n");
-            while (*zombie_amount != 0)
+            while (*ZOMBIE_AMOUNT != 0)
             {
-                ZombieAttack(player, zombie_amount);
-                PlayerAttack(player, zombie_amount);
-                if (*zombie_amount <= 0)
+                ZombieAttack(player, ZOMBIE_AMOUNT);
+                PlayerAttack(player, ZOMBIE_AMOUNT);
+                if (*ZOMBIE_AMOUNT <= 0)
                 {
                     int random = rand() % 5;
                     printf("\nYou shot with your %s || %s -1\n", (*player).active_weapon->name, (*player).active_weapon->ammo_name);
@@ -2791,7 +2791,7 @@ void ZombieFight(player *player, int *zombie_amount)
 }
 
 // Player attack (no interaction)
-void PlayerAttack(player *player, int *zombie_amount)
+void PlayerAttack(Player *player, int *ZOMBIE_AMOUNT)
 {
     int random_int = rand() % 100;
     // 95% chance of landing a shot
@@ -2809,14 +2809,14 @@ void PlayerAttack(player *player, int *zombie_amount)
             printf("\nYou have no ammo! There is no time to change your weapon!\n");
             printf("You hit the zombie with your knife.\n");
             Continue();
-            (*player).current_room->enemies[(*zombie_amount)-1]->life -= attack_damage;
+            (*player).current_room->enemies[(*ZOMBIE_AMOUNT)-1]->life -= attack_damage;
             // If zombie has no life left
-            if ((*player).current_room->enemies[(*zombie_amount)-1]->life <= 0)
+            if ((*player).current_room->enemies[(*ZOMBIE_AMOUNT)-1]->life <= 0)
             {
-                (*player).current_room->enemies[(*zombie_amount)-1]->is_dead = true;
-                (*zombie_amount) = (*zombie_amount) - 1;
+                (*player).current_room->enemies[(*ZOMBIE_AMOUNT)-1]->is_dead = true;
+                (*ZOMBIE_AMOUNT) = (*ZOMBIE_AMOUNT) - 1;
                 // If all zombies dead
-                if (*zombie_amount <= 0)
+                if (*ZOMBIE_AMOUNT <= 0)
                 {
                     return;
                 }
@@ -2844,14 +2844,14 @@ void PlayerAttack(player *player, int *zombie_amount)
             {
                 (*player).active_weapon->ammo --;
             }
-            (*player).current_room->enemies[*zombie_amount-1]->life -= attack_damage;
+            (*player).current_room->enemies[*ZOMBIE_AMOUNT-1]->life -= attack_damage;
             // If zombie has no life left
-            if ((*player).current_room->enemies[*zombie_amount-1]->life <= 0)
+            if ((*player).current_room->enemies[*ZOMBIE_AMOUNT-1]->life <= 0)
             {
-                (*player).current_room->enemies[*zombie_amount-1]->is_dead = true;
-                (*zombie_amount) = (*zombie_amount) - 1;
+                (*player).current_room->enemies[*ZOMBIE_AMOUNT-1]->is_dead = true;
+                (*ZOMBIE_AMOUNT) = (*ZOMBIE_AMOUNT) - 1;
                 // If all zombies dead
-                if (*zombie_amount <= 0)
+                if (*ZOMBIE_AMOUNT <= 0)
                 {
                     return;
                 }
@@ -2901,10 +2901,10 @@ void PlayerAttack(player *player, int *zombie_amount)
 }
 
 // Zombie attack - interaction: Dodge
-void ZombieAttack(player *player, int *zombie_amount)
+void ZombieAttack(Player *player, int *ZOMBIE_AMOUNT)
 {
     // Zombie ATTACK
-    if (player->current_room->zombie_amount > 1)
+    if (player->current_room->ZOMBIE_AMOUNT > 1)
     {
         // 2 Zombies attack
         printf("\nThe zombies are attacking you. Try to dodge!\n");
@@ -2932,7 +2932,7 @@ void ZombieAttack(player *player, int *zombie_amount)
     printf("\n--- 1 ---\n");
     sleepMilliSecond(1000);
     int line;
-    if (player->current_room->zombie_amount > 1)
+    if (player->current_room->ZOMBIE_AMOUNT > 1)
     {
         // 2 Zombies attack
         line = ZombieAttackLine(2);
@@ -2959,7 +2959,7 @@ void ZombieAttack(player *player, int *zombie_amount)
             break;
         }
     }
-    if (player->current_room->zombie_amount > 1)
+    if (player->current_room->ZOMBIE_AMOUNT > 1)
     {
         // 2 Zombies attack
         line = ZombieAttackLine(2);
@@ -3031,27 +3031,27 @@ void Continue(void)
 void ContinueOne(void)
 {
     int input = 0;
-    printed = false;
+    is_printed = false;
     while (input != 1)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Type '1' to continue:");
-            printed = true;
+            is_printed = true;
         }
         input = get_int(" ");
     }
 }
 
 // Show current location
-void ShowLocation(player *player)
+void ShowLocation(Player *player)
 {
     printf("\nYour location: %s, %s.\n", (*player).current_room->name, (*player).current_room->floor_name);
     Continue();
 }
 
 // Show current inventory
-void ShowInventory(player *player)
+void ShowInventory(Player *player)
 {
     printf("\n# INVENTORY:\n");
     for (int i = 0; i < 3; i++)
@@ -3073,7 +3073,7 @@ void ShowInventory(player *player)
 }
 
 // Change weapon
-void ChangeWeapon(player *player)
+void ChangeWeapon(Player *player)
 {
     printf("\nWhich weapon do you want to change?\n");
     for (int i = 0; i < 3; i++)
@@ -3086,13 +3086,13 @@ void ChangeWeapon(player *player)
     printf("\n");
     printf("\nType the number of the weapon or '0' if you don't wan't to change your weapon.\n");
     int input = 100;
-    printed = false;
+    is_printed = false;
     while (input < 0 || input > 3)
     {   
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Your choice:");
-            printed = true;
+            is_printed = true;
         }
         input = get_int(" ");
     }
@@ -3128,14 +3128,14 @@ void ChangeWeapon(player *player)
 }
 
 // Show health of the player
-void ShowHealth(player *player)
+void ShowHealth(Player *player)
 {
     printf("\nYour health is %i of 100.\n", (*player).health);
     Continue();
 }
 
 // Use herbs to increase HP
-void UseHerbs(player *player) 
+void UseHerbs(Player *player) 
 {
     if ((*player).health == 100)
     {
@@ -3159,20 +3159,20 @@ void UseHerbs(player *player)
 }
 
 // get all action possibilities
-void Help(player *player)
+void Help(Player *player)
 {
     printf("\nWhat do you want to do?\n");
     printf("\n'1' show inventory, '2' show location");
     printf("\n'3' change weapon, '4' show health");
     printf("\n'5' use herbs, '6' back\n");
     int input = 10;
-    printed = false;
+    is_printed = false;
     while (input < 1 || input > 6)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Your choice:");
-            printed = true;
+            is_printed = true;
         }
         input = get_int(" ");
     }
@@ -3203,7 +3203,7 @@ void Help(player *player)
 }
 
 // If player is out of HP he will die. Able to continue the game in this function if enough lives
-void Death(player *player)
+void Death(Player *player)
 {
     Continue();
     (*player).lives -= 1;
@@ -3247,7 +3247,7 @@ void Death(player *player)
 // ##################################################
 
 // riddle to check different objects
-void DiningRoomRiddle(player *player, room *previous_room)
+void DiningRoomRiddle(Player *player, Room *previous_room)
 {
     printf("\n'It hangs upon the wall, a silent work of art,'\n");
     printf("'But look beyond its beauty, and you'll make a start.'\n");
@@ -3265,13 +3265,13 @@ void DiningRoomRiddle(player *player, room *previous_room)
     printf("'4' - Inspect the blood on the wall.\n");
 
     int input = 100;
-    printed = false;
+    is_printed = false;
     while(input < 0 || input > 4)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Your choice:");
-            printed = true;
+            is_printed = true;
         }
         input = get_int(" ");
     }
@@ -3307,13 +3307,13 @@ void DiningRoomRiddle(player *player, room *previous_room)
         printf("\n'0' - Don't.\n");
         printf("'1' - Press the button.\n");
         int new_input = 100;
-        printed = false;
+        is_printed = false;
         while(new_input < 0 || new_input > 1)
         {
-            if (!printed)
+            if (!is_printed)
             {
                 printf("\n## Your choice:");
-                printed = true;
+                is_printed = true;
             }
             new_input = get_int(" ");
         }
@@ -3368,19 +3368,19 @@ void DiningRoomRiddle(player *player, room *previous_room)
 }
 
 // riddle to open a door or leave it closed
-void VestibuleRiddle (player *player, room *previous_room)
+void VestibuleRiddle (Player *player, Room *previous_room)
 {
     printf("\n What do you want to do?\n");
     printf("\n'0' - Go back.\n");
     printf("'1' - Remove the wooden planks from the wall.\n");
     int input = 100;
-    printed = false;
+    is_printed = false;
     while(input < 0 || input > 1)
     {
-        if (!printed)
+        if (!is_printed)
         {
             printf("\n## Your choice:");
-            printed = true;
+            is_printed = true;
         }
         input = get_int(" ");
     }
@@ -3404,7 +3404,7 @@ void VestibuleRiddle (player *player, room *previous_room)
 }
 
 // riddle of sorting letters
-void GuestRoomRiddle(player *player, room *previous_room)
+void GuestRoomRiddle(Player *player, Room *previous_room)
 {
     printf("\n'I unlock the doors, to secrets kept inside,'\n");
     printf("'I hold the power, to open and provide.'\n");
@@ -3441,7 +3441,7 @@ void GuestRoomRiddle(player *player, room *previous_room)
 }
 
 // input check for GuestRoomRiddle
-void check(player *player, int *row, int *col, room *previous_room)
+void check(Player *player, int *row, int *col, Room *previous_room)
 {
     if (array[1][0] == 75 && array[1][1] == 69 && array[1][2] == 89)
     {
@@ -3580,7 +3580,7 @@ void check(player *player, int *row, int *col, room *previous_room)
 }
 
 // Riddle to convert a letter into binary code
-void LaundryRoomRiddle(player *player, room *previous_room)
+void LaundryRoomRiddle(Player *player, Room *previous_room)
 {
     printf("\nI am a simple letter, just one of many you see,\n");
     printf("But when I'm translated, to binary I'll be.\n");
@@ -3789,7 +3789,7 @@ int Skull(int num)
 }
 
 // Combat system for Boss fights
-void BossFight(player *player, int *boss_life, bool *boss_alive, int boss_life_display)
+void BossFight(Player *player, int *boss_life, bool *boss_alive, int boss_life_display)
 {
     int input = 100;
     printf("\n## Type '0' for help actions\n## or '1' when you're ready to try shooting the beast: ");
@@ -3936,7 +3936,7 @@ void BossFight(player *player, int *boss_life, bool *boss_alive, int boss_life_d
 
 
 // Riddle of running through a maze and dodge the boss if a dead end is reached
-void MazeStart(player *player, maze_path *pointer)
+void MazeStart(Player *player, MazePath *pointer)
 {    
     int input = -1;
     printf("\nCurrent Passage: %i\n", pointer->num);
@@ -3944,7 +3944,7 @@ void MazeStart(player *player, maze_path *pointer)
     {
         MazeDodge(player);
         printf("\nRUN BACK! ");
-        for (int i = 0; i < available_paths_size; i++)
+        for (int i = 0; i < AVAILABLE_PATHS_SIZE; i++)
         {
             if (i == 0 && (*pointer).available_paths[i] != NULL)
             {
@@ -3960,7 +3960,7 @@ void MazeStart(player *player, maze_path *pointer)
             }
         }
         printf("\n");
-        while (input < 0 || input > available_paths_size)
+        while (input < 0 || input > AVAILABLE_PATHS_SIZE)
         {
             scanf("%d", &input);
         }
@@ -3968,7 +3968,7 @@ void MazeStart(player *player, maze_path *pointer)
         MazeStart(player, pointer);
     }
     // 14 is the Exit
-    else if (memcmp(pointer, &paths_array[14], sizeof(maze_path)) == 0)
+    else if (memcmp(pointer, &paths_array[14], sizeof(MazePath)) == 0)
     {
         MazeFinalFight();
         int boss_life = 300;
@@ -3978,14 +3978,14 @@ void MazeStart(player *player, maze_path *pointer)
         {
             BossFight(player, &boss_life, &boss_alive, boss_life_display);
         }
-        boss_maze = false;
+        is_maze_boss_dead = true;
         player->current_room->func(player);
     }
     else
     {
         // Where do you want to go?
         printf("\nRUN! ");
-        for (int i = 0; i < available_paths_size; i++)
+        for (int i = 0; i < AVAILABLE_PATHS_SIZE; i++)
         {
             if (i == 0 && (*pointer).available_paths[i] != NULL)
             {
@@ -4001,7 +4001,7 @@ void MazeStart(player *player, maze_path *pointer)
             }
         }
         printf("\n");
-        while (input < 0 || input > available_paths_size)
+        while (input < 0 || input > AVAILABLE_PATHS_SIZE)
         {
             scanf("%d", &input);
         }
@@ -4011,7 +4011,7 @@ void MazeStart(player *player, maze_path *pointer)
 }
 
 // Dodge function for the Maze
-void MazeDodge(player *player)
+void MazeDodge(Player *player)
 {
     printf("It's a dead end! The beast is running towards you. Get ready to dodge and flee!\n");
     printf("\n## Type '1' when you're ready: ");
