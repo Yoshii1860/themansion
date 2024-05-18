@@ -2,7 +2,7 @@
 
 The Mansion of Hampshire Woods is a thrilling text-based adventure game where you explore a sprawling mansion filled with secrets, puzzles, and danger. Uncover the truth by navigating through interconnected rooms, solving mind-bending challenges, and engaging in strategic combat with lurking enemies.
 
-<a href="https://youtu.be/0j8loRWB7C0">
+<a href="https://www.youtube.com/watch?v=WRkVsdcTb38">
     <img alt="Flaticon" title="Flaticon" src="https://cdn-icons-png.flaticon.com/256/1384/1384060.png" width="30">
 </a>
 
